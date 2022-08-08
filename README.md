@@ -67,12 +67,12 @@ and that our entry point is Mpeg4Extractor::parseChunk() function.
 -------------------
 #### Stagefright Vulnerabilities summary & exploitation
 
-https://googleprojectzero.blogspot.com/2015/09/stagefrightened.html  
-https://research.nccgroup.com/wp-content/uploads/2020/07/libstagefright-exploit-notes.pdf 
-https://www.exploit-db.com/docs/english/39527-metaphor---a-(real)-real-%C2%ADlife-stagefright-exploit.pdf
-https://ia903108.us.archive.org/5/items/stagefright_201805/stagefright.pdf
-https://web.archive.org/web/20160331185650/http://translate.wooyun.io/2015/08/08/Stagefright-Vulnerability-Disclosure.html
-https://web.archive.org/web/20160413230809/http://blog.fortinet.com/post/cryptogirl-on-stagefright-a-detailed-explanation
-http://www.cs.toronto.edu/~arnold/427/16s/csc427_16s/indepth/Stagefright/Stagefright-and-Metaphor.pdf
-https://raw.githubusercontent.com/NorthBit/Public/master/NorthBit-Metaphor.pdf
+https://googleprojectzero.blogspot.com/2015/09/stagefrightened.html    
+https://research.nccgroup.com/wp-content/uploads/2020/07/libstagefright-exploit-notes.pdf   
+https://www.exploit-db.com/docs/english/39527-metaphor---a-(real)-real-%C2%ADlife-stagefright-exploit.pdf  
+https://ia903108.us.archive.org/5/items/stagefright_201805/stagefright.pdf  
+https://web.archive.org/web/20160331185650/http://translate.wooyun.io/2015/08/08/Stagefright-Vulnerability-Disclosure.html  
+https://web.archive.org/web/20160413230809/http://blog.fortinet.com/post/cryptogirl-on-stagefright-a-detailed-explanation  
+http://www.cs.toronto.edu/~arnold/427/16s/csc427_16s/indepth/Stagefright/Stagefright-and-Metaphor.pdf  
+https://raw.githubusercontent.com/NorthBit/Public/master/NorthBit-Metaphor.pdf  
 
