@@ -1,0 +1,92 @@
+# Query: new 
+# Flags: WordMatch RegExp OpenEditors
+# Excluding: mdatasource.*
+# ContextLines: 1
+
+22 results - 1 file
+
+media/libstagefright/MPEG4Extractor.cpp:
+   398        mLastTrack(NULL),
+   399:       mFileMetaData(new MetaData),
+   400        mFirstSINF(NULL),
+
+   436      if ((err = readMetaData()) != OK) {
+   437:         return new MetaData;
+   438      }
+
+   681  
+   682:         SINF *sinf = new SINF;
+   683          sinf->trackID = U16_AT(&buffer[3]);
+
+   740              sinf->len = dataLen - 3;
+   741:             sinf->IPMPData = new (std::nothrow) char[sinf->len];
+   742              if (sinf->IPMPData == NULL) {
+
+   909                      sp<MPEG4DataSource> cachedSource =
+   910:                         new MPEG4DataSource(mDataSource);
+   911  
+
+   916  
+   917:                 mLastTrack->sampleTable = new SampleTable(mDataSource);
+   918              }
+
+   923  
+   924:                 Track *track = new Track;
+   925                  track->next = NULL;
+
+   932  
+   933:                 track->meta = new MetaData;
+   934                  track->includes_expensive_metadata = false;
+
+  1161  
+  1162:             pssh.data = new (std::nothrow) uint8_t[pssh.datalen];
+  1163              if (pssh.data == NULL) {
+
+  1691  
+  1692:             sp<ABuffer> buffer = new ABuffer(chunk_data_size);
+  1693  
+
+  1705          {
+  1706:             sp<ABuffer> buffer = new ABuffer(chunk_data_size);
+  1707  
+
+  1963  
+  1964:             uint8_t *buffer = new (std::nothrow) uint8_t[size + chunk_size];
+  1965              if (buffer == NULL) {
+
+  1998                          chunk_data_size, data_offset);
+  1999:                 sp<ABuffer> buffer = new ABuffer(chunk_data_size + 1);
+  2000                  if (mDataSource->readAt(
+
+  2283  
+  2284:     uint8_t *buffer = new (std::nothrow) uint8_t[size + 1];
+  2285      if (buffer == NULL) {
+
+  2473  
+  2474:     uint8_t *buffer = new (std::nothrow) uint8_t[size];
+  2475      if (buffer == NULL) {
+
+  2605              if (!mFileMetaData->hasData(kMap[i].key)) {
+  2606:                 ID3::Iterator *it = new ID3::Iterator(id3, kMap[i].tag1);
+  2607                  if (it->done()) {
+  2608                      delete it;
+  2609:                     it = new ID3::Iterator(id3, kMap[i].tag2);
+  2610                  }
+
+  2670  
+  2671:     return new MPEG4Source(this,
+  2672              track->meta, mDataSource, track->timescale, track->sampleTable,
+
+  3134  
+  3135:     mGroup = new MediaBufferGroup;
+  3136  
+
+  3139  
+  3140:     mGroup->add_buffer(new MediaBuffer(max_size));
+  3141  
+  3142:     mSrcBuffer = new (std::nothrow) uint8_t[max_size];
+  3143      if (mSrcBuffer == NULL) {
+
+  4472      if (moovAtomEndOffset >= 0) {
+  4473:         *meta = new AMessage;
+  4474          (*meta)->setInt64("meta-data-size", moovAtomEndOffset);

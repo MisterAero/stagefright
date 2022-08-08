@@ -1,0 +1,452 @@
+# Query: mDataSource
+# Flags: OpenEditors IgnoreExcludeSettings
+# ContextLines: 1
+
+119 results - 1 file
+
+src/media/libstagefright/MPEG4Extractor.cpp:
+    80      sp<MetaData> mFormat;
+    81:     sp<DataSource> mDataSource;
+    82      int32_t mTimescale;
+
+   392      : mMoofOffset(0),
+   393:       mDataSource(source),
+   394        mInitCheck(NO_INIT),
+
+   545          uint32_t hdr[2];
+   546:         if (mDataSource->readAt(offset, hdr, 8) < 8) {
+   547              break;
+
+   633      uint8_t updateIdTag;
+   634:     if (mDataSource->readAt(data_offset, &updateIdTag, 1) < 1) {
+   635          return ERROR_IO;
+
+   643      uint8_t numOfBytes;
+   644:     int32_t size = readSize(data_offset, mDataSource, &numOfBytes);
+   645      if (size < 0) {
+
+   651          uint8_t descriptorTag;
+   652:         if (mDataSource->readAt(data_offset, &descriptorTag, 1) < 1) {
+   653              return ERROR_IO;
+
+   662          //ObjectDescriptorID and ObjectDescriptor url flag
+   663:         if (mDataSource->readAt(data_offset, buffer, 2) < 2) {
+   664              return ERROR_IO;
+
+   671  
+   672:         if (mDataSource->readAt(data_offset, buffer, 8) < 8) {
+   673              return ERROR_IO;
+
+   694  
+   695:     if (mDataSource->readAt(data_offset, &updateIdTag, 1) < 1) {
+   696          return ERROR_IO;
+
+   703  
+   704:     size = readSize(data_offset, mDataSource, &numOfBytes);
+   705      if (size < 0) {
+
+   712          int32_t dataLen;
+   713:         if (mDataSource->readAt(data_offset, &tag, 1) < 1) {
+   714              return ERROR_IO;
+
+   719              uint8_t id;
+   720:             dataLen = readSize(data_offset, mDataSource, &numOfBytes);
+   721              if (dataLen < 0) {
+
+   727  
+   728:             if (mDataSource->readAt(data_offset, &id, 1) < 1) {
+   729                  return ERROR_IO;
+
+   746  
+   747:             if (mDataSource->readAt(data_offset, sinf->IPMPData, sinf->len) < sinf->len) {
+   748                  return ERROR_IO;
+
+   800      uint32_t hdr[2];
+   801:     if (mDataSource->readAt(*offset, hdr, 8) < 8) {
+   802          return ERROR_IO;
+
+   808      if (chunk_size == 1) {
+   809:         if (mDataSource->readAt(*offset + 8, &chunk_size, 8) < 8) {
+   810              return ERROR_IO;
+
+   822              off64_t sourceSize;
+   823:             if (mDataSource->getSize(&sourceSize) == OK) {
+   824                  chunk_size = (sourceSize - *offset);
+
+   854          }
+   855:         if (mDataSource->readAt(*offset, buffer, n)
+   856                  < (ssize_t)n) {
+
+   908                   */
+   909:                 if (mDataSource->flags()
+   910                          & (DataSource::kWantsPrefetching
+
+   912                      sp<MPEG4DataSource> cachedSource =
+   913:                         new MPEG4DataSource(mDataSource);
+   914  
+   915                      if (cachedSource->setCachedRange(*offset, chunk_size) == OK) {
+   916:                         mDataSource = cachedSource;
+   917                      }
+
+   920                  /* Interesting */
+   921:                 mLastTrack->sampleTable = new SampleTable(mDataSource);
+   922              }
+
+   998              uint8_t version;
+   999:             if (mDataSource->readAt(data_offset, &version, 1) < 1) {
+  1000                  return ERROR_IO;
+
+  1003              uint32_t entry_count;
+  1004:             if (!mDataSource->getUInt32(data_offset + 4, &entry_count)) {
+  1005                  return ERROR_IO;
+
+  1018                  if (version == 1) {
+  1019:                     if (!mDataSource->getUInt64(entriesoffset, &segment_duration) ||
+  1020:                             !mDataSource->getUInt64(entriesoffset + 8, (uint64_t*)&media_time)) {
+  1021                          return ERROR_IO;
+
+  1025                      int32_t mt;
+  1026:                     if (!mDataSource->getUInt32(entriesoffset, &sd) ||
+  1027:                             !mDataSource->getUInt32(entriesoffset + 4, (uint32_t*)&mt)) {
+  1028                          return ERROR_IO;
+
+  1066              uint32_t original_fourcc;
+  1067:             if (mDataSource->readAt(data_offset, &original_fourcc, 4) < 4) {
+  1068                  return ERROR_IO;
+
+  1094              memset(buf, 0, 4);
+  1095:             if (mDataSource->readAt(data_offset + 4, buf + 1, 3) < 3) {
+  1096                  return ERROR_IO;
+
+  1104              memset(buf, 0, 4);
+  1105:             if (mDataSource->readAt(data_offset + 7, buf + 3, 1) < 1) {
+  1106                  return ERROR_IO;
+
+  1122  
+  1123:             if (mDataSource->readAt(data_offset + 8, &defaultKeyId, 16) < 16) {
+  1124                  return ERROR_IO;
+
+  1150  
+  1151:             if (mDataSource->readAt(data_offset + 4, &pssh.uuid, 16) < 16) {
+  1152                  return ERROR_IO;
+
+  1155              uint32_t psshdatalen = 0;
+  1156:             if (mDataSource->readAt(data_offset + 20, &psshdatalen, 4) < 4) {
+  1157                  return ERROR_IO;
+
+  1171              ssize_t requested = (ssize_t) pssh.datalen;
+  1172:             if (mDataSource->readAt(data_offset + 24, pssh.data, requested) < requested) {
+  1173                  return ERROR_IO;
+
+  1188              uint8_t version;
+  1189:             if (mDataSource->readAt(
+  1190                          data_offset, &version, sizeof(version))
+
+  1205              uint32_t timescale;
+  1206:             if (mDataSource->readAt(
+  1207                          timescale_offset, &timescale, sizeof(timescale))
+
+  1217              if (version == 1) {
+  1218:                 if (mDataSource->readAt(
+  1219                              timescale_offset + 4, &duration, sizeof(duration))
+
+  1227                  uint32_t duration32;
+  1228:                 if (mDataSource->readAt(
+  1229                              timescale_offset + 4, &duration32, sizeof(duration32))
+
+  1251  
+  1252:             if (mDataSource->readAt(lang_offset, &lang, sizeof(lang))
+  1253                      < (ssize_t)sizeof(lang)) {
+
+  1282  
+  1283:             if (mDataSource->readAt(
+  1284                          data_offset, buffer, 8) < 8) {
+
+  1344  
+  1345:             if (mDataSource->readAt(
+  1346                          data_offset, buffer, sizeof(buffer)) < (ssize_t)sizeof(buffer)) {
+
+  1404  
+  1405:             if (mDataSource->readAt(
+  1406                          data_offset, buffer, sizeof(buffer)) < (ssize_t)sizeof(buffer)) {
+
+  1625  
+  1626:             if (mDataSource->readAt(
+  1627                          data_offset + 4, buffer, location_length) < location_length) {
+
+  1648  
+  1649:             if (mDataSource->readAt(
+  1650                          data_offset, buffer, chunk_data_size) < chunk_data_size) {
+
+  1697  
+  1698:             if (mDataSource->readAt(
+  1699                          data_offset, buffer->data(), chunk_data_size) < chunk_data_size) {
+
+  1711  
+  1712:             if (mDataSource->readAt(
+  1713                          data_offset, buffer->data(), chunk_data_size) < chunk_data_size) {
+
+  1744  
+  1745:             if (mDataSource->readAt(
+  1746                      data_offset, buffer, chunk_data_size) < chunk_data_size) {
+
+  1762  
+  1763:             if (mDataSource->readAt(
+  1764                          data_offset, buffer, 4) < 4) {
+
+  1820              uint8_t header[32];
+  1821:             if (mDataSource->readAt(
+  1822                          data_offset, header, sizeof(header))
+
+  1867              uint8_t flags[4];
+  1868:             if (mDataSource->readAt(
+  1869                          data_offset, flags, sizeof(flags))
+
+  1879                  }
+  1880:                 mDataSource->getUInt64(data_offset + 4, &duration);
+  1881                  if (duration == 0xffffffffffffffff) {
+
+  1886                  uint32_t d32;
+  1887:                 mDataSource->getUInt32(data_offset + 4, &d32);
+  1888                  if (d32 == 0xffffffff) {
+
+  1922              uint32_t buffer;
+  1923:             if (mDataSource->readAt(
+  1924                          data_offset + 8, &buffer, 4) < 4) {
+
+  1946              Trex trex;
+  1947:             if (!mDataSource->getUInt32(data_offset + 4, &trex.track_ID) ||
+  1948:                 !mDataSource->getUInt32(data_offset + 8, &trex.default_sample_description_index) ||
+  1949:                 !mDataSource->getUInt32(data_offset + 12, &trex.default_sample_duration) ||
+  1950:                 !mDataSource->getUInt32(data_offset + 16, &trex.default_sample_size) ||
+  1951:                 !mDataSource->getUInt32(data_offset + 20, &trex.default_sample_flags)) {
+  1952                  return ERROR_IO;
+
+  1976  
+  1977:             if ((size_t)(mDataSource->readAt(*offset, buffer + size, chunk_size))
+  1978                      < chunk_size) {
+
+  2007                  sp<ABuffer> buffer = new ABuffer(chunk_data_size + 1);
+  2008:                 if (mDataSource->readAt(
+  2009                      data_offset, buffer->data(), chunk_data_size) != (ssize_t)chunk_data_size) {
+
+  2086      uint32_t flags;
+  2087:     if (!mDataSource->getUInt32(offset, &flags)) {
+  2088          return ERROR_MALFORMED;
+
+  2096      uint32_t referenceId;
+  2097:     if (!mDataSource->getUInt32(offset + 4, &referenceId)) {
+  2098          return ERROR_MALFORMED;
+
+  2101      uint32_t timeScale;
+  2102:     if (!mDataSource->getUInt32(offset + 8, &timeScale)) {
+  2103          return ERROR_MALFORMED;
+
+  2117          uint32_t tmp;
+  2118:         if (!mDataSource->getUInt32(offset, &tmp)) {
+  2119              return ERROR_MALFORMED;
+
+  2121          earliestPresentationTime = tmp;
+  2122:         if (!mDataSource->getUInt32(offset + 4, &tmp)) {
+  2123              return ERROR_MALFORMED;
+
+  2131          }
+  2132:         if (!mDataSource->getUInt64(offset, &earliestPresentationTime)) {
+  2133              return ERROR_MALFORMED;
+  2134          }
+  2135:         if (!mDataSource->getUInt64(offset + 8, &firstOffset)) {
+  2136              return ERROR_MALFORMED;
+
+  2147      uint16_t referenceCount;
+  2148:     if (!mDataSource->getUInt16(offset + 2, &referenceCount)) {
+  2149          return ERROR_MALFORMED;
+
+  2162  
+  2163:         if (!mDataSource->getUInt32(offset, &d1) ||     // size
+  2164:             !mDataSource->getUInt32(offset + 4, &d2) || // duration
+  2165:             !mDataSource->getUInt32(offset + 8, &d3)) { // flags
+  2166              return ERROR_MALFORMED;
+
+  2204      uint8_t version;
+  2205:     if (mDataSource->readAt(data_offset, &version, 1) < 1) {
+  2206          return ERROR_IO;
+
+  2216  
+  2217:     if (mDataSource->readAt(
+  2218                  data_offset, buffer, data_size) < (ssize_t)data_size) {
+
+  2296      }
+  2297:     if (mDataSource->readAt(
+  2298                  offset, buffer, size) != (ssize_t)size) {
+
+  2486      }
+  2487:     if (mDataSource->readAt(
+  2488                  offset, buffer, size) != (ssize_t)size) {
+
+  2589  void MPEG4Extractor::parseID3v2MetaData(off64_t offset) {
+  2590:     ID3 id3(mDataSource, true /* ignorev1 */, offset);
+  2591  
+
+  2680      return new MPEG4Source(this,
+  2681:             track->meta, mDataSource, track->timescale, track->sampleTable,
+  2682              mSidxEntries, trex, mMoofOffset);
+
+  3043        mFormat(format),
+  3044:       mDataSource(dataSource),
+  3045        mTimescale(timeScale),
+
+  3185      uint32_t hdr[2];
+  3186:     if (mDataSource->readAt(*offset, hdr, 8) < 8) {
+  3187          return ERROR_IO;
+
+  3193      if (chunk_size == 1) {
+  3194:         if (mDataSource->readAt(*offset + 8, &chunk_size, 8) < 8) {
+  3195              return ERROR_IO;
+
+  3230                  while (true) {
+  3231:                     if (mDataSource->readAt(*offset, hdr, 8) < 8) {
+  3232                          return ERROR_END_OF_STREAM;
+
+  3304      uint8_t version;
+  3305:     if (mDataSource->readAt(
+  3306              offset, &version, sizeof(version))
+
+  3316      uint32_t flags;
+  3317:     if (!mDataSource->getUInt24(offset, &flags)) {
+  3318          return ERROR_IO;
+
+  3323          uint32_t tmp;
+  3324:         if (!mDataSource->getUInt32(offset, &tmp)) {
+  3325              return ERROR_MALFORMED;
+
+  3328          offset += 4;
+  3329:         if (!mDataSource->getUInt32(offset, &tmp)) {
+  3330              return ERROR_MALFORMED;
+
+  3336      uint8_t defsize;
+  3337:     if (mDataSource->readAt(offset, &defsize, 1) != 1) {
+  3338          return ERROR_MALFORMED;
+
+  3343      uint32_t smplcnt;
+  3344:     if (!mDataSource->getUInt32(offset, &smplcnt)) {
+  3345          return ERROR_MALFORMED;
+
+  3358  
+  3359:     mDataSource->readAt(offset, mCurrentSampleInfoSizes, smplcnt);
+  3360      return OK;
+
+  3367      uint8_t version;
+  3368:     if (mDataSource->readAt(offset, &version, sizeof(version)) != 1) {
+  3369          return ERROR_IO;
+
+  3373      uint32_t flags;
+  3374:     if (!mDataSource->getUInt24(offset, &flags)) {
+  3375          return ERROR_IO;
+
+  3379      uint32_t entrycount;
+  3380:     if (!mDataSource->getUInt32(offset, &entrycount)) {
+  3381          return ERROR_IO;
+
+  3393              uint32_t tmp;
+  3394:             if (!mDataSource->getUInt32(offset, &tmp)) {
+  3395                  return ERROR_IO;
+
+  3400              uint64_t tmp;
+  3401:             if (!mDataSource->getUInt64(offset, &tmp)) {
+  3402                  return ERROR_IO;
+
+  3421          memset(smpl->iv, 0, 16);
+  3422:         if (mDataSource->readAt(drmoffset, smpl->iv, ivlength) != ivlength) {
+  3423              return ERROR_IO;
+
+  3433              uint16_t numsubsamples;
+  3434:             if (!mDataSource->getUInt16(drmoffset, &numsubsamples)) {
+  3435                  return ERROR_IO;
+
+  3440                  uint32_t numencrypted;
+  3441:                 if (!mDataSource->getUInt16(drmoffset, &numclear)) {
+  3442                      return ERROR_IO;
+
+  3444                  drmoffset += 2;
+  3445:                 if (!mDataSource->getUInt32(drmoffset, &numencrypted)) {
+  3446                      return ERROR_IO;
+
+  3468      uint32_t flags;
+  3469:     if (!mDataSource->getUInt32(offset, &flags)) { // actually version + flags
+  3470          return ERROR_MALFORMED;
+
+  3476  
+  3477:     if (!mDataSource->getUInt32(offset + 4, (uint32_t*)&mLastParsedTrackId)) {
+  3478          return ERROR_MALFORMED;
+
+  3497  
+  3498:         if (!mDataSource->getUInt64(offset, &mTrackFragmentHeaderInfo.mBaseDataOffset)) {
+  3499              return ERROR_MALFORMED;
+
+  3509  
+  3510:         if (!mDataSource->getUInt32(offset, &mTrackFragmentHeaderInfo.mSampleDescriptionIndex)) {
+  3511              return ERROR_MALFORMED;
+
+  3521  
+  3522:         if (!mDataSource->getUInt32(offset, &mTrackFragmentHeaderInfo.mDefaultSampleDuration)) {
+  3523              return ERROR_MALFORMED;
+
+  3533  
+  3534:         if (!mDataSource->getUInt32(offset, &mTrackFragmentHeaderInfo.mDefaultSampleSize)) {
+  3535              return ERROR_MALFORMED;
+
+  3545  
+  3546:         if (!mDataSource->getUInt32(offset, &mTrackFragmentHeaderInfo.mDefaultSampleFlags)) {
+  3547              return ERROR_MALFORMED;
+
+  3577      uint32_t flags;
+  3578:     if (!mDataSource->getUInt32(offset, &flags)) {
+  3579          return ERROR_MALFORMED;
+
+  3592      uint32_t sampleCount;
+  3593:     if (!mDataSource->getUInt32(offset + 4, &sampleCount)) {
+  3594          return ERROR_MALFORMED;
+
+  3608          int32_t dataOffsetDelta;
+  3609:         if (!mDataSource->getUInt32(offset, (uint32_t*)&dataOffsetDelta)) {
+  3610              return ERROR_MALFORMED;
+
+  3623  
+  3624:         if (!mDataSource->getUInt32(offset, &firstSampleFlags)) {
+  3625              return ERROR_MALFORMED;
+
+  3674          if (flags & kSampleDurationPresent) {
+  3675:             if (!mDataSource->getUInt32(offset, &sampleDuration)) {
+  3676                  return ERROR_MALFORMED;
+
+  3681          if (flags & kSampleSizePresent) {
+  3682:             if (!mDataSource->getUInt32(offset, &sampleSize)) {
+  3683                  return ERROR_MALFORMED;
+
+  3688          if (flags & kSampleFlagsPresent) {
+  3689:             if (!mDataSource->getUInt32(offset, &sampleFlags)) {
+  3690                  return ERROR_MALFORMED;
+
+  3695          if (flags & kSampleCompositionTimeOffsetPresent) {
+  3696:             if (!mDataSource->getUInt32(offset, &sampleCtsOffset)) {
+  3697                  return ERROR_MALFORMED;
+
+  3868              ssize_t num_bytes_read =
+  3869:                 mDataSource->readAt(offset, (uint8_t *)mBuffer->data(), size);
+  3870  
+
+  3947              num_bytes_read =
+  3948:                 mDataSource->readAt(offset, (uint8_t*)mBuffer->data(), size);
+  3949          } else {
+  3950:             num_bytes_read = mDataSource->readAt(offset, mSrcBuffer, size);
+  3951          }
+
+  4143              ssize_t num_bytes_read =
+  4144:                 mDataSource->readAt(offset, (uint8_t *)mBuffer->data(), size);
+  4145  
+
+  4223              num_bytes_read =
+  4224:                 mDataSource->readAt(offset, (uint8_t*)mBuffer->data(), size);
+  4225          } else {
+  4226:             num_bytes_read = mDataSource->readAt(offset, mSrcBuffer, size);
+  4227          }
