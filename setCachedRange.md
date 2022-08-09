@@ -1,6 +1,7 @@
 ## setCachedRange
 
-**Still not sure what it can give us other than clearing the cache**
+**Still not sure what it can give us other than clearing the cache and
+filling it with data from the mSource**
 ```cpp
 status_t MPEG4DataSource::setCachedRange(off64_t offset, size_t size) {
     Mutex::Autolock autoLock(mLock);
@@ -16,7 +17,7 @@ status_t MPEG4DataSource::setCachedRange(off64_t offset, size_t size) {
     mCachedOffset = offset;
     mCachedSize = size;
 
-    /* Vulnerability? heap overflow controlled by us? */
+    /* This is where we can invoke the overwriten readAt()*/
     ssize_t err = mSource->readAt(mCachedOffset, mCache, mCachedSize);
 
     if (err < (ssize_t)size) {
